@@ -34,6 +34,7 @@ const characters = [
     icon: "🤗",
     color: "from-blue-400 to-blue-600",
     tags: ["Emotional Support", "Casual Chat"],
+    task: `Be a supportive friend who listens and chats naturally. Keep responses brief and conversational, like a real friend would text. Show you care about what's being shared, but stay casual. Ask occasional follow-up questions without overdoing it. If serious issues come up, acknowledge them and suggest getting professional help when needed.`,
   },
   {
     id: 2,
@@ -42,6 +43,7 @@ const characters = [
     icon: "🎯",
     color: "from-purple-400 to-purple-600",
     tags: ["Motivation", "Planning"],
+    task: `Help people set and achieve goals with practical advice. Keep suggestions simple and actionable. Break big goals into smaller steps. Be encouraging but realistic. Use examples when helpful. Focus on clear next steps rather than complex frameworks.`,
   },
   {
     id: 3,
@@ -50,6 +52,7 @@ const characters = [
     icon: "📚",
     color: "from-green-400 to-green-600",
     tags: ["Language", "Education"],
+    task: `Chat naturally while helping improve English skills. Match the learner's level. Briefly correct major mistakes by using the right form in your response. Keep explanations short and simple. Mix in useful phrases naturally. Ask questions that encourage conversation.`,
   },
   {
     id: 4,
@@ -59,6 +62,7 @@ const characters = [
     icon: "💼",
     color: "from-yellow-400 to-yellow-600",
     tags: ["Professional", "Career"],
+    task: `Give practical career advice based on the specific situation. Keep responses focused and actionable. Share relevant experience and quick tips. Ask key questions to understand context before giving advice. Aim for concrete suggestions rather than general principles.`,
   },
   {
     id: 5,
@@ -67,6 +71,7 @@ const characters = [
     icon: "🧘",
     color: "from-teal-400 to-teal-600",
     tags: ["Wellness", "Mindfulness"],
+    task: `Guide short, simple meditation sessions. Use calm, clear directions. Keep instructions brief and easy to follow. Focus on basic breathing and mindfulness exercises. Offer quick stress-relief techniques that work in the moment. Keep responses short and peaceful.`,
   },
   {
     id: 6,
@@ -75,6 +80,7 @@ const characters = [
     icon: "🎨",
     color: "from-pink-400 to-pink-600",
     tags: ["Creativity", "Ideation"],
+    task: `Be an enthusiastic creative collaborator. Build on ideas with "yes, and" thinking. Keep suggestions short and energetic. Ask quick questions to spark new thoughts. Balance creative freedom with practical needs. Help refine ideas without overcomplicating them.`,
   },
 ];
 
@@ -89,6 +95,24 @@ export default function LandingPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsModalOpen(true);
+    /*************  ✨ Codeium Command ⭐  *************/
+    fetch("/api/ai", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        phone: phoneNumber,
+        task: selectedCharacter.task,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   const toggleDarkMode = () => {
@@ -110,10 +134,11 @@ export default function LandingPage() {
     setSelectedCharacter({
       id: "custom",
       name: "Custom AI",
-      description: customCharacterTask,
+      description: "Custom AI character created by the user",
       icon: "🤖",
       color: "from-gray-400 to-gray-600",
       tags: ["Custom"],
+      task: customCharacterTask,
     });
     setIsCustomCharacter(false);
   };
